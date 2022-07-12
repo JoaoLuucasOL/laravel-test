@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Mensagem;
 use App\Models\Topico;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Iluminate\Support\Facades\Auth;
 
 class MensagemController extends Controller
 {
@@ -42,16 +43,16 @@ class MensagemController extends Controller
         $validated = $request->validate([
             'titulo' => 'required|max:255',
             'mensagem' => 'required|max:255',
-            'topico' => 'array|exists:App\Models\Topico,id'
+            'topico' => 'array|exists:App\Models\Topico, id'
         ]);
         if ($validated) {
-            //print_r($request->get('topico));
+            //print_r($request->get(topico));
             $mensagem = new Mensagem();
-            $mensagem-> user_id = Auth::user()->id;
+            $mensagem->user_id = Auth::user()->id;
             $mensagem->titulo = $request->get('titulo');
             $mensagem->mensagem = $request->get('mensagem');
             $mensagem->save();
-            $mensagem->topicos()->attach($request->get('topico'));
+            $mensagem->topicos()->attach($requeest->get('topico'));
             return redirect('mensagem');
         }
     }
@@ -88,14 +89,14 @@ class MensagemController extends Controller
      */
     public function update(Request $request, Mensagem $mensagem)
     {
-        $validated = $request->validate([
+        $validated = $request->validated([
             'titulo' => 'required|max:255',
             'mensagem' => 'required|max:255',
-            'topico' => 'array|exists:App\Models\Topico,id'
+            'topico' => 'array|exist:App\Models\Topicos,id'
         ]);
         if ($validated) {
             $mensagem->titulo = $request->get('titulo');
-            $mensagem->mensagem = $request->get('mensagem');
+            $mensagem->menssagem = $request->get('mensagem');
             $mensagem->save();
             $mensagem->topicos()->sync($request->get('topico'));
             return redirect('mensagem');

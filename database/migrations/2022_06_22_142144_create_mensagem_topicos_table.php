@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('team_user', function (Blueprint $table) {
+        Schema::create('mensagem_topico', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id');
-            $table->foreignId('user_id');
-            $table->string('role')->nullable();
+            $table->foreignId('mensagem_id')->contrained()
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('topico_id')->contrained()
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->unique('mensagem_id', 'topico_id');
             $table->timestamps();
-
-            $table->unique(['team_id', 'user_id']);
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('team_user');
+        Schema::dropIfExists('mensagem_topico');
     }
 };
